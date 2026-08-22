@@ -176,35 +176,56 @@ function App() {
       <div className="min-h-screen bg-soft-ivory text-slate-800 flex flex-col selection:bg-warm-gold selection:text-oxford-blue">
       
       {/* 1. STICKY NAVIGATION HEADER */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "header-glass py-3 shadow-md" : "bg-oxford-blue border-b border-warm-gold/10"}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "header-glass py-2 shadow-2xl" : "header-initial py-1"}`}>
         {/* Top Info utility ribbon */}
-        <div className={`bg-[#071930] transition-all duration-350 ${scrolled ? "max-h-0 opacity-0 overflow-hidden" : "max-h-12 opacity-100 py-2"}`}>
+        <div className={`bg-gradient-to-r from-[#020a14] via-[#061932] to-[#020a14] border-b border-warm-gold/20 transition-all duration-300 ${scrolled ? "max-h-0 opacity-0 overflow-hidden py-0 border-none" : "max-h-12 opacity-100 py-1.5"}`}>
           <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center text-[10px] md:text-[11px] text-slate-300 font-medium gap-2 sm:gap-0">
             <div className="flex items-center gap-6">
-              <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-warm-gold" /> +91 94433 12345</span>
-              <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-warm-gold" /> admissions@hopetuition.in</span>
+              <span className="hidden md:inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-wider uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Admissions Open 2026-27
+              </span>
+              <a href="tel:+919443312345" className="flex items-center gap-1.5 hover:text-warm-gold transition-colors">
+                <div className="w-4 h-4 rounded-full bg-warm-gold/20 flex items-center justify-center">
+                  <Phone className="w-2.5 h-2.5 text-warm-gold" />
+                </div>
+                <span className="font-semibold">+91 94433 12345</span>
+              </a>
+              <a href="mailto:admissions@hopetuition.in" className="flex items-center gap-1.5 hover:text-warm-gold transition-colors">
+                <div className="w-4 h-4 rounded-full bg-warm-gold/20 flex items-center justify-center">
+                  <Mail className="w-2.5 h-2.5 text-warm-gold" />
+                </div>
+                <span className="font-semibold">admissions@hopetuition.in</span>
+              </a>
             </div>
-            <span className="hidden sm:flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-warm-gold" /> Cantonment, Tiruchirappalli</span>
+            <div className="hidden sm:flex items-center gap-1.5 text-slate-300">
+              <div className="w-4 h-4 rounded-full bg-warm-gold/20 flex items-center justify-center">
+                <MapPin className="w-2.5 h-2.5 text-warm-gold" />
+              </div>
+              <span className="font-medium">Cantonment, Tiruchirappalli</span>
+            </div>
           </div>
         </div>
 
-        <div className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? "pt-0" : "pt-4 pb-4"}`}>
-          <a href="#home" className="flex items-center gap-3 group">
-            <div className="bg-warm-gold p-2 rounded-sm text-oxford-blue transition-transform duration-300 group-hover:rotate-12">
-              <GraduationCap className="w-6 h-6" />
+        <div className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? "py-2" : "py-3.5"}`}>
+          {/* Brand Logo */}
+          <a href="#home" className="flex items-center gap-3.5 group shrink-0">
+            <div className="bg-gradient-to-br from-[#faecd5] via-[#d4af37] to-[#997328] p-2.5 rounded-xl text-[#051428] shadow-[0_0_18px_rgba(197,168,128,0.35)] ring-1 ring-white/40 transition-all duration-300 group-hover:scale-105 group-hover:rotate-6 shrink-0">
+              <GraduationCap className="w-6 h-6 stroke-[2.2]" />
             </div>
-            <div className="flex flex-col">
-              <span className="font-serif text-xl md:text-2xl font-bold tracking-wide text-white group-hover:text-warm-gold transition-colors">
+            <div className="flex flex-col text-left">
+              <span className="font-serif text-lg md:text-xl font-bold tracking-wide text-gold-gradient group-hover:brightness-110 transition-all whitespace-nowrap">
                 HOPE TUITION ACADEMY
               </span>
-              <span className="text-[10px] text-warm-gold uppercase tracking-[0.2em] font-semibold leading-none">
+              <span className="text-[9px] md:text-[10px] text-warm-gold font-semibold uppercase tracking-[0.22em] leading-none flex items-center gap-1.5 mt-0.5 whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
                 Tuition Center of Excellence
               </span>
             </div>
           </a>
 
-          {/* Desktop Nav Links with Scrollspy active colors and sliding indicators */}
-          <nav className="hidden lg:flex items-center gap-8">
+          {/* Desktop Nav Links - Clean, Professional Horizontal Layout */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 mx-4">
             {[
               { id: "about", label: "About Us" },
               { id: "courses", label: "Courses" },
@@ -213,38 +234,39 @@ function App() {
               { id: "teachers", label: "Teachers" },
               { id: "testimonials", label: "Testimonials" },
               { id: "contact", label: "Contact" }
-            ].map((link) => (
-              <a 
-                key={link.id}
-                href={`#${link.id}`} 
-                className={`text-sm font-medium transition-all duration-300 relative py-1 group ${
-                  activeSection === link.id ? "text-warm-gold" : "text-slate-300 hover:text-warm-gold"
-                }`}
-              >
-                {link.label}
-                <span 
-                  className={`absolute bottom-0 left-0 h-[2px] bg-warm-gold transition-all duration-300 ${
-                    activeSection === link.id ? "w-full" : "w-0 group-hover:w-full"
+            ].map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a 
+                  key={link.id}
+                  href={`#${link.id}`} 
+                  className={`text-[13px] font-medium tracking-wide whitespace-nowrap py-1.5 transition-colors duration-300 ${
+                    isActive 
+                      ? "text-warm-gold font-semibold" 
+                      : "text-slate-200 hover:text-warm-gold"
                   }`}
-                />
-              </a>
-            ))}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Desktop Action CTA */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:block shrink-0">
             <a 
               href="#contact" 
-              className="bg-warm-gold hover:bg-warm-gold-hover text-oxford-blue px-6 py-2.5 rounded-sm font-bold text-sm transition-all duration-300 shadow-md hover:shadow-warm-gold/20 flex items-center gap-2"
+              className="btn-gold-luxury px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-2 whitespace-nowrap shadow-md hover:shadow-warm-gold/30 transition-all duration-300"
             >
-              Join Now <ChevronRight className="w-4 h-4" />
+              <span>Join Now</span>
+              <ChevronRight className="w-3.5 h-3.5 stroke-[2.5]" />
             </a>
           </div>
 
           {/* Mobile Hamburger Toggle */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-white hover:text-warm-gold transition-colors"
+            className="lg:hidden p-2.5 rounded-xl bg-white/5 border border-warm-gold/30 text-warm-gold hover:bg-warm-gold/20 transition-all shrink-0"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -253,8 +275,17 @@ function App() {
       </header>
 
       {/* Mobile Drawer Panel with Active scrollspy highlights */}
-      <div className={`fixed inset-0 z-40 bg-oxford-blue/95 transition-all duration-300 flex flex-col justify-center p-8 ${mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-        <nav className="flex flex-col gap-6 text-center">
+      <div className={`fixed inset-0 z-40 bg-gradient-to-b from-[#061830]/98 via-[#0b2545]/98 to-[#040f1e]/98 backdrop-blur-2xl transition-all duration-300 flex flex-col justify-center p-8 ${mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+        <div className="absolute top-6 right-6">
+          <button 
+            onClick={() => setMobileMenuOpen(false)}
+            className="p-2.5 rounded-full bg-white/10 text-warm-gold hover:bg-warm-gold/20 transition-colors"
+            aria-label="Close menu"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+        <nav className="flex flex-col gap-4 text-center max-w-sm mx-auto w-full">
           {[
             { id: "about", label: "About Us" },
             { id: "courses", label: "Courses" },
@@ -263,23 +294,28 @@ function App() {
             { id: "teachers", label: "Teachers" },
             { id: "testimonials", label: "Testimonials" },
             { id: "contact", label: "Contact Us" }
-          ].map((link) => (
-            <a 
-              key={link.id}
-              href={`#${link.id}`} 
-              onClick={() => setMobileMenuOpen(false)} 
-              className={`text-2xl font-serif transition-colors ${
-                activeSection === link.id ? "text-warm-gold" : "text-white hover:text-warm-gold"
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="mt-8">
+          ].map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <a 
+                key={link.id}
+                href={`#${link.id}`} 
+                onClick={() => setMobileMenuOpen(false)} 
+                className={`py-2.5 px-4 rounded-xl text-lg font-serif transition-all ${
+                  isActive 
+                    ? "bg-warm-gold/20 text-warm-gold border border-warm-gold/40 font-bold shadow-[0_0_15px_rgba(197,168,128,0.2)]" 
+                    : "text-slate-200 hover:text-warm-gold hover:bg-white/5"
+                }`}
+              >
+                {link.label}
+              </a>
+            );
+          })}
+          <div className="mt-6">
             <a 
               href="#contact" 
               onClick={() => setMobileMenuOpen(false)}
-              className="inline-block bg-warm-gold hover:bg-warm-gold-hover text-oxford-blue px-8 py-3 rounded-sm font-bold text-lg transition-all"
+              className="btn-gold-luxury block w-full py-3.5 rounded-xl font-bold text-base uppercase tracking-wider text-center"
             >
               Join Now
             </a>
@@ -321,27 +357,36 @@ function App() {
 
             {/* Styled Hero Display Grid */}
             <div className="relative flex justify-center">
-              <div className="absolute -inset-4 bg-warm-gold/10 rounded-full blur-3xl opacity-30"></div>
-              <div className="relative border border-warm-gold/20 bg-oxford-blue/60 p-6 rounded-md backdrop-blur-md shadow-2xl max-w-md w-full grid grid-cols-2 gap-4">
-                <div className="bg-white/5 p-4 rounded-sm border border-white/10 flex flex-col justify-between h-32">
-                  <GraduationCap className="w-8 h-8 text-warm-gold" />
+              <div className="absolute -inset-4 bg-warm-gold/15 rounded-full blur-3xl opacity-40"></div>
+              <div className="relative card-glass-dark p-6 rounded-2xl shadow-2xl max-w-md w-full grid grid-cols-2 gap-4">
+                <div className="bg-white/[0.06] hover:bg-white/[0.12] p-5 rounded-xl border border-white/10 hover:border-warm-gold/40 transition-all duration-300 flex flex-col justify-between h-34 shadow-sm group">
+                  <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center text-warm-gold group-hover:scale-110 transition-transform">
+                    <GraduationCap className="w-6 h-6" />
+                  </div>
                   <div>
                     <h3 className="text-2xl font-bold text-white leading-none">100%</h3>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-wider mt-1">Board Pass Rate</p>
+                    <p className="text-[10px] text-slate-300 uppercase tracking-wider mt-1.5 font-semibold">Board Pass Rate</p>
                   </div>
                 </div>
-                <div className="bg-white/5 p-4 rounded-sm border border-white/10 flex flex-col justify-between h-32">
-                  <Users className="w-8 h-8 text-warm-gold" />
+                <div className="bg-white/[0.06] hover:bg-white/[0.12] p-5 rounded-xl border border-white/10 hover:border-warm-gold/40 transition-all duration-300 flex flex-col justify-between h-34 shadow-sm group">
+                  <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center text-warm-gold group-hover:scale-110 transition-transform">
+                    <Users className="w-6 h-6" />
+                  </div>
                   <div>
                     <h3 className="text-2xl font-bold text-white leading-none">12 Max</h3>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-wider mt-1">Student Batch Size</p>
+                    <p className="text-[10px] text-slate-300 uppercase tracking-wider mt-1.5 font-semibold">Batch Size Limit</p>
                   </div>
                 </div>
-                <div className="bg-white/5 p-4 rounded-sm border border-white/10 flex flex-col justify-between h-32 col-span-2">
-                  <Star className="w-8 h-8 text-warm-gold fill-warm-gold" />
+                <div className="bg-white/[0.06] hover:bg-white/[0.12] p-5 rounded-xl border border-white/10 hover:border-warm-gold/40 transition-all duration-300 flex flex-col justify-between h-34 col-span-2 shadow-sm group">
+                  <div className="flex items-center justify-between">
+                    <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center text-warm-gold group-hover:scale-110 transition-transform">
+                      <Star className="w-6 h-6 fill-warm-gold" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-warm-gold bg-warm-gold/15 px-2.5 py-1 rounded-full border border-warm-gold/30">Top Rated</span>
+                  </div>
                   <div>
                     <h3 className="text-lg font-bold text-white">Expert Mentorship</h3>
-                    <p className="text-xs text-slate-300 mt-1">Qualified school educators committed to conceptual clarity.</p>
+                    <p className="text-xs text-slate-300 mt-1">Qualified school educators committed to deep conceptual clarity.</p>
                   </div>
                 </div>
               </div>
@@ -349,244 +394,12 @@ function App() {
           </div>
         </section>
 
-        {/* 3. ABOUT US */}
-        <section id="about" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6 text-left">
-                <div className="inline-block bg-oxford-blue/5 text-oxford-blue px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider border border-oxford-blue/10">
-                  Who We Are
-                </div>
-                <h2 className="font-serif text-3xl md:text-4xl font-bold text-oxford-blue">
-                  Dedicated to Cultivating Academic Excellence & Confidence
-                </h2>
-                <p className="text-slate-600 leading-relaxed">
-                  Founded with the core vision of closing educational gaps, Hope Tuition Academy is a premium tutoring center built on the values of clarity, rigor, and personalization. We do not support complex administrative tracking systems; our singular focus is delivering world-class tutoring.
-                </p>
-                <div className="border-l-4 border-warm-gold pl-4 py-2 italic text-oxford-blue font-serif text-lg bg-soft-ivory pr-2">
-                  "Our teaching approach is based on deep conceptual understanding, structured evaluation, and reinforcing student self-belief."
-                </div>
-                <p className="text-slate-600 leading-relaxed">
-                  We believe that education should not be an assembly line. By keeping our batches small and hiring only seasoned subject experts, we ensure every student receives targeted coaching that fits their unique learning rate.
-                </p>
-              </div>
-
-              {/* Mission/Vision Cards */}
-              <div className="grid gap-6">
-                <div className="bg-soft-ivory p-8 rounded-sm border-l-4 border-oxford-blue shadow-sm text-left">
-                  <h3 className="font-serif text-xl font-bold text-oxford-blue mb-2">Our Mission</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    To empower secondary and high school students with structured academic mastery, turning classroom difficulties into academic confidence through custom mentorship.
-                  </p>
-                </div>
-                <div className="bg-soft-ivory p-8 rounded-sm border-l-4 border-warm-gold shadow-sm text-left">
-                  <h3 className="font-serif text-xl font-bold text-oxford-blue mb-2">Our Vision</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    To be the leading beacon of tutoring credibility, setting the benchmark for small-batch excellence where parents feel secure and students thrive.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. WHY CHOOSE US */}
-        <section id="why-us" className="py-20 bg-soft-ivory border-t border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6 text-center space-y-12">
-            <div className="space-y-4 max-w-2xl mx-auto">
-              <span className="text-warm-gold font-semibold uppercase tracking-wider text-xs md:text-sm">
-                Our Differentiators
-              </span>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-oxford-blue">
-                Why Students Succeed With Us
-              </h2>
-              <p className="text-slate-600">
-                We focus strictly on premium learning dynamics, eliminating distracting administrative systems to keep attention on what matters: lesson clarity.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {reasons.map((reason, index) => (
-                <div 
-                  key={index}
-                  className="group bg-white p-8 rounded-sm border border-slate-200 hover:border-warm-gold/50 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(197,168,128,0.12)] text-left space-y-4 relative overflow-hidden"
-                >
-                  <div className="bg-oxford-blue/5 text-oxford-blue p-3 rounded-sm inline-block transition-all duration-300 group-hover:bg-warm-gold group-hover:text-white">
-                    {getReasonIcon(index)}
-                  </div>
-                  <h3 className="font-serif text-lg font-bold text-oxford-blue">
-                    {reason.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    {reason.description}
-                  </p>
-                  {/* Bottom animated border line */}
-                  <div className="w-0 group-hover:w-full h-[2.5px] bg-warm-gold transition-all duration-300 absolute bottom-0 left-0"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 5. COURSES */}
-        <section id="courses" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-6 space-y-12">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 pb-8">
-              <div className="space-y-4 text-left">
-                <span className="text-warm-gold font-semibold uppercase tracking-wider text-xs md:text-sm">
-                  Curriculum Options
-                </span>
-                <h2 className="font-serif text-3xl md:text-4xl font-bold text-oxford-blue">
-                  Our Expert-Led Courses
-                </h2>
-                <p className="text-slate-600 max-w-lg">
-                  Explore subjects structured around board syllabus guidelines and college admission targets.
-                </p>
-              </div>
-
-              {/* Segmented control tabs */}
-              <div className="flex flex-wrap gap-2">
-                {["All", "Primary", "Secondary", "High School"].map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat)}
-                    className={`px-5 py-2.5 text-xs font-bold uppercase tracking-wider rounded-sm transition-all ${
-                      activeCategory === cat 
-                        ? "bg-oxford-blue text-white shadow-md border border-oxford-blue" 
-                        : "bg-soft-ivory text-slate-600 hover:text-oxford-blue border border-slate-200"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredCourses.map((course) => (
-                <div 
-                  key={course.id}
-                  className="group border border-slate-200 rounded-sm hover:border-warm-gold/50 shadow-sm flex flex-col justify-between bg-white overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_50px_rgba(197,168,128,0.12)] relative"
-                >
-                  <div className="p-6 text-left space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="bg-warm-gold/15 text-warm-gold-hover px-2.5 py-1 rounded-sm text-[10px] font-bold uppercase tracking-wider">
-                        {course.grade}
-                      </span>
-                      <span className="text-xs text-slate-400 uppercase tracking-widest">{course.category}</span>
-                    </div>
-                    <h3 className="font-serif text-xl font-bold text-oxford-blue leading-snug">
-                      {course.title}
-                    </h3>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      {course.description}
-                    </p>
-                    <div className="space-y-2 pt-3 pb-2 px-4 rounded-sm bg-soft-ivory/50 border border-slate-100">
-                      <span className="text-[11px] font-bold text-oxford-blue uppercase tracking-wider block">What you will learn:</span>
-                      <ul className="grid grid-cols-2 gap-1 text-xs text-slate-600">
-                        {course.topics.map((topic, i) => (
-                          <li key={i} className="flex items-center gap-1.5">
-                            <Check className="w-3.5 h-3.5 text-warm-gold shrink-0" />
-                            <span className="truncate">{topic}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="bg-soft-ivory px-6 py-4 border-t border-slate-100 flex items-center justify-between z-10">
-                    <span className="text-xs text-slate-500 font-medium">{course.duration}</span>
-                    <a 
-                      href="#contact" 
-                      onClick={() => setFormData(prev => ({ ...prev, grade: `${course.grade} - ${course.title}` }))}
-                      className="text-xs font-bold text-oxford-blue hover:text-warm-gold flex items-center gap-1 transition-colors"
-                    >
-                      Enquire <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-                    </a>
-                  </div>
-                  {/* Bottom animated border line */}
-                  <div className="w-0 group-hover:w-full h-[2.5px] bg-warm-gold transition-all duration-300 absolute bottom-0 left-0"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 6. CLASS TIMINGS */}
-        <section id="timings" className="py-20 bg-soft-ivory border-t border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6 space-y-12">
-            <div className="text-center space-y-4 max-w-2xl mx-auto">
-              <span className="text-warm-gold font-semibold uppercase tracking-wider text-xs md:text-sm">
-                Schedule Timetable
-              </span>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-oxford-blue">
-                Weekly Class Timings
-              </h2>
-              <p className="text-slate-600">
-                Select your preferred slot from our morning or evening batches. Perfect for balancing academic and extra-curricular timings.
-              </p>
-
-              {/* Timetable Tab Toggle */}
-              <div className="inline-flex bg-white p-1 rounded-sm border border-slate-200 mt-4">
-                <button
-                  onClick={() => setActiveScheduleTab("morning")}
-                  className={`px-6 py-2 text-xs font-bold uppercase tracking-wider rounded-sm transition-all ${
-                    activeScheduleTab === "morning"
-                      ? "bg-oxford-blue text-white"
-                      : "text-slate-600 hover:text-oxford-blue"
-                  }`}
-                >
-                  Morning Batches
-                </button>
-                <button
-                  onClick={() => setActiveScheduleTab("evening")}
-                  className={`px-6 py-2 text-xs font-bold uppercase tracking-wider rounded-sm transition-all ${
-                    activeScheduleTab === "evening"
-                      ? "bg-oxford-blue text-white"
-                      : "text-slate-600 hover:text-oxford-blue"
-                  }`}
-                >
-                  Evening Batches
-                </button>
-              </div>
-            </div>
-
-            {/* Timetable schedule grid */}
-            <div className="bg-white border border-slate-200 rounded-sm shadow-sm overflow-hidden max-w-4xl mx-auto">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-oxford-blue text-white text-xs font-bold uppercase tracking-wider">
-                      <th className="px-6 py-4">Days</th>
-                      <th className="px-6 py-4">Time Slot</th>
-                      <th className="px-6 py-4">Class / Subject</th>
-                      <th className="px-6 py-4">Classroom</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
-                    {timings[activeScheduleTab].map((row, idx) => (
-                      <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                        <td className="px-6 py-4 font-semibold text-oxford-blue">{row.day}</td>
-                        <td className="px-6 py-4">{row.time}</td>
-                        <td className="px-6 py-4 font-medium">{row.course}</td>
-                        <td className="px-6 py-4 text-xs">
-                          <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-sm font-mono border border-slate-200">
-                            {row.room}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* INTERACTIVE BRAND BANNER */}
-        <section className="py-24 bg-[#09090f] relative overflow-hidden border-t border-b border-warm-gold/20 flex flex-col items-center justify-center text-center">
-          <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:24px_24px]"></div>
-          <div className="w-full max-w-4xl px-6 space-y-4">
-            <div className="h-32 md:h-40 w-full relative overflow-hidden">
+        {/* INTERACTIVE BRAND BANNER (Moved upper to seamlessly transition from Hero into Content Cards) */}
+        <section className="py-20 bg-gradient-to-b from-oxford-blue via-[#061830] to-[#0a2342] relative overflow-hidden border-t border-b border-warm-gold/25 flex flex-col items-center justify-center text-center shadow-inner">
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:24px_24px]"></div>
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-warm-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="w-full max-w-4xl px-6 space-y-4 relative z-10">
+            <div className="h-28 md:h-36 w-full relative overflow-hidden flex items-center justify-center">
               <ParticleText
                 text="HOPE ACADEMY"
                 particleSize={2.4}
@@ -600,29 +413,282 @@ function App() {
                 repelRadius={110}
                 idleDrift={0.6}
                 trigger="hover"
-                fontSize="clamp(3rem, 8vw, 6.2rem)"
+                fontSize="clamp(2.8rem, 7.5vw, 5.8rem)"
                 fontWeight={900}
                 fontFamily="Playfair Display"
                 glow
               />
             </div>
-            <p className="text-warm-gold/80 font-serif text-lg md:text-xl tracking-[0.25em] uppercase font-bold italic">
+            <p className="text-warm-gold font-serif text-sm md:text-lg tracking-[0.28em] uppercase font-bold italic drop-shadow-sm">
               Inspiring Excellence, Securing Futures
             </p>
           </div>
         </section>
 
-        {/* 7. TEACHERS */}
-        <section id="teachers" className="py-20 bg-white">
+        {/* 3. ABOUT US */}
+        <section id="about" className="py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6 text-left">
+                <div className="inline-flex items-center gap-2 bg-oxford-blue/5 text-oxford-blue px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-oxford-blue/10">
+                  <span className="w-2 h-2 rounded-full bg-warm-gold"></span>
+                  Who We Are
+                </div>
+                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue leading-tight">
+                  Dedicated to Cultivating Academic Excellence & Confidence
+                </h2>
+                <p className="text-slate-600 leading-relaxed text-base">
+                  Founded with the core vision of closing educational gaps, Hope Tuition Academy is a premium tutoring center built on the values of clarity, rigor, and personalization. We do not support complex administrative tracking systems; our singular focus is delivering world-class tutoring.
+                </p>
+                <div className="border-l-4 border-warm-gold pl-5 py-3 italic text-oxford-blue font-serif text-lg bg-soft-ivory rounded-r-xl shadow-sm">
+                  "Our teaching approach is based on deep conceptual understanding, structured evaluation, and reinforcing student self-belief."
+                </div>
+                <p className="text-slate-600 leading-relaxed text-base">
+                  We believe that education should not be an assembly line. By keeping our batches small and hiring only seasoned subject experts, we ensure every student receives targeted coaching that fits their unique learning rate.
+                </p>
+              </div>
+
+              {/* Mission/Vision Cards */}
+              <div className="grid gap-6">
+                <div className="card-luxury p-8 rounded-2xl border-l-4 border-l-oxford-blue shadow-lg text-left group">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-serif text-2xl font-bold text-oxford-blue">Our Mission</h3>
+                    <div className="w-8 h-8 rounded-full bg-oxford-blue/10 flex items-center justify-center text-oxford-blue group-hover:bg-oxford-blue group-hover:text-white transition-colors">
+                      <Target className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <p className="text-slate-600 text-sm leading-relaxed">
+                    To empower secondary and high school students with structured academic mastery, turning classroom difficulties into academic confidence through custom mentorship.
+                  </p>
+                </div>
+                <div className="card-luxury p-8 rounded-2xl border-l-4 border-l-warm-gold shadow-lg text-left group">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-serif text-2xl font-bold text-oxford-blue">Our Vision</h3>
+                    <div className="w-8 h-8 rounded-full bg-warm-gold/20 flex items-center justify-center text-warm-gold-hover group-hover:bg-warm-gold group-hover:text-oxford-blue transition-colors">
+                      <Award className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <p className="text-slate-600 text-sm leading-relaxed">
+                    To be the leading beacon of tutoring credibility, setting the benchmark for small-batch excellence where parents feel secure and students thrive.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. WHY CHOOSE US */}
+        <section id="why-us" className="py-24 bg-soft-ivory border-t border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-6 text-center space-y-12">
+            <div className="space-y-4 max-w-2xl mx-auto">
+              <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
+                Our Differentiators
+              </span>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue">
+                Why Students Succeed With Us
+              </h2>
+              <p className="text-slate-600 text-base">
+                We focus strictly on premium learning dynamics, eliminating distracting administrative systems to keep attention on what matters: lesson clarity.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {reasons.map((reason, index) => (
+                <div 
+                  key={index}
+                  className="card-luxury p-8 rounded-2xl text-left space-y-5 group relative"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-oxford-blue/10 via-oxford-blue/5 to-transparent border border-oxford-blue/10 flex items-center justify-center text-oxford-blue group-hover:bg-gradient-to-br group-hover:from-warm-gold group-hover:to-[#a07c48] group-hover:text-white transition-all duration-300 shadow-sm">
+                      {getReasonIcon(index)}
+                    </div>
+                    <span className="text-3xl font-serif font-extrabold text-slate-200 group-hover:text-warm-gold/40 transition-colors">
+                      0{index + 1}
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-xl font-bold text-oxford-blue group-hover:text-oxford-blue/90 transition-colors">
+                    {reason.title}
+                  </h3>
+                  <p className="text-slate-600 text-sm leading-relaxed">
+                    {reason.description}
+                  </p>
+                  {/* Bottom animated border line */}
+                  <div className="w-0 group-hover:w-full h-[3px] bg-gradient-to-r from-warm-gold via-[#e0c7a0] to-warm-gold transition-all duration-500 absolute bottom-0 left-0"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 5. COURSES */}
+        <section id="courses" className="py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-6 space-y-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 pb-8">
+              <div className="space-y-4 text-left">
+                <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
+                  Curriculum Options
+                </span>
+                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue">
+                  Our Expert-Led Courses
+                </h2>
+                <p className="text-slate-600 max-w-lg text-base">
+                  Explore subjects structured around board syllabus guidelines and college admission targets.
+                </p>
+              </div>
+
+              {/* Segmented control tabs */}
+              <div className="flex flex-wrap gap-2 bg-slate-100/80 p-1.5 rounded-full border border-slate-200">
+                {["All", "Primary", "Secondary", "High School"].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-5 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-all ${
+                      activeCategory === cat 
+                        ? "bg-oxford-blue text-white shadow-md" 
+                        : "text-slate-600 hover:text-oxford-blue hover:bg-white/60"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredCourses.map((course) => (
+                <div 
+                  key={course.id}
+                  className="card-luxury rounded-2xl flex flex-col justify-between group"
+                >
+                  <div className="p-7 text-left space-y-5">
+                    <div className="flex items-center justify-between">
+                      <span className="card-badge-gold px-3.5 py-1 rounded-full text-[10px] uppercase tracking-wider">
+                        {course.grade}
+                      </span>
+                      <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider bg-slate-100 px-3 py-1 rounded-full">
+                        {course.category}
+                      </span>
+                    </div>
+                    <h3 className="font-serif text-2xl font-bold text-oxford-blue leading-snug group-hover:text-warm-gold-hover transition-colors">
+                      {course.title}
+                    </h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {course.description}
+                    </p>
+                    <div className="space-y-2.5 pt-3 pb-3 px-4 rounded-xl bg-soft-ivory/80 border border-slate-200/60">
+                      <span className="text-[11px] font-bold text-oxford-blue uppercase tracking-wider block">Key Learning Modules:</span>
+                      <ul className="grid grid-cols-2 gap-2 text-xs text-slate-600 font-medium">
+                        {course.topics.map((topic, i) => (
+                          <li key={i} className="flex items-center gap-1.5">
+                            <div className="w-3.5 h-3.5 rounded-full bg-warm-gold/20 flex items-center justify-center shrink-0">
+                              <Check className="w-2.5 h-2.5 text-warm-gold stroke-[3]" />
+                            </div>
+                            <span className="truncate">{topic}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="bg-slate-50/80 px-7 py-4 border-t border-slate-100 flex items-center justify-between z-10">
+                    <span className="text-xs font-semibold text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200/80">{course.duration}</span>
+                    <a 
+                      href="#contact" 
+                      onClick={() => setFormData(prev => ({ ...prev, grade: `${course.grade} - ${course.title}` }))}
+                      className="text-xs font-bold text-oxford-blue hover:text-warm-gold flex items-center gap-1.5 transition-colors group/btn"
+                    >
+                      Enquire Now <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1.5" />
+                    </a>
+                  </div>
+                  {/* Bottom animated border line */}
+                  <div className="w-0 group-hover:w-full h-[3px] bg-gradient-to-r from-warm-gold via-[#e0c7a0] to-warm-gold transition-all duration-500 absolute bottom-0 left-0"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. CLASS TIMINGS */}
+        <section id="timings" className="py-24 bg-soft-ivory border-t border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 space-y-12">
             <div className="text-center space-y-4 max-w-2xl mx-auto">
-              <span className="text-warm-gold font-semibold uppercase tracking-wider text-xs md:text-sm">
+              <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
+                Schedule Timetable
+              </span>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue">
+                Weekly Class Timings
+              </h2>
+              <p className="text-slate-600 text-base">
+                Select your preferred slot from our morning or evening batches. Perfect for balancing academic and extra-curricular timings.
+              </p>
+
+              {/* Timetable Tab Toggle */}
+              <div className="inline-flex bg-white p-1.5 rounded-full border border-slate-200 shadow-sm mt-4">
+                <button
+                  onClick={() => setActiveScheduleTab("morning")}
+                  className={`px-6 py-2.5 text-xs font-bold uppercase tracking-wider rounded-full transition-all ${
+                    activeScheduleTab === "morning"
+                      ? "bg-oxford-blue text-white shadow-sm"
+                      : "text-slate-600 hover:text-oxford-blue"
+                  }`}
+                >
+                  Morning Batches
+                </button>
+                <button
+                  onClick={() => setActiveScheduleTab("evening")}
+                  className={`px-6 py-2.5 text-xs font-bold uppercase tracking-wider rounded-full transition-all ${
+                    activeScheduleTab === "evening"
+                      ? "bg-oxford-blue text-white shadow-sm"
+                      : "text-slate-600 hover:text-oxford-blue"
+                  }`}
+                >
+                  Evening Batches
+                </button>
+              </div>
+            </div>
+
+            {/* Timetable schedule grid */}
+            <div className="card-luxury rounded-2xl shadow-xl overflow-hidden max-w-4xl mx-auto border border-slate-200">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-oxford-blue to-[#061830] text-white text-xs font-bold uppercase tracking-wider">
+                      <th className="px-6 py-4">Days</th>
+                      <th className="px-6 py-4">Time Slot</th>
+                      <th className="px-6 py-4">Class / Subject</th>
+                      <th className="px-6 py-4">Classroom</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
+                    {timings[activeScheduleTab].map((row, idx) => (
+                      <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                        <td className="px-6 py-4 font-semibold text-oxford-blue">{row.day}</td>
+                        <td className="px-6 py-4">{row.time}</td>
+                        <td className="px-6 py-4 font-medium">{row.course}</td>
+                        <td className="px-6 py-4 text-xs">
+                          <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-mono border border-slate-200 font-semibold">
+                            {row.room}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 7. TEACHERS */}
+        <section id="teachers" className="py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-6 space-y-12">
+            <div className="text-center space-y-4 max-w-2xl mx-auto">
+              <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
                 Academy Educators
               </span>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-oxford-blue">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue">
                 Meet Our Expert Instructors
               </h2>
-              <p className="text-slate-600">
+              <p className="text-slate-600 text-base">
                 Highly qualified professionals dedicated to delivering structured conceptual breakdowns and guidance.
               </p>
             </div>
@@ -646,35 +712,35 @@ function App() {
                 />
               </div>
 
-              {/* Right pane: Teacher Details */}
-              <div className="lg:col-span-6 text-left space-y-6 bg-soft-ivory p-8 rounded-sm border border-slate-200 shadow-sm relative min-h-[340px] flex flex-col justify-between">
-                <div className="space-y-4">
+              {/* Right pane: Teacher Details Card */}
+              <div className="lg:col-span-6 text-left space-y-6 card-luxury p-8 md:p-10 rounded-2xl shadow-xl relative min-h-[360px] flex flex-col justify-between bg-gradient-to-br from-white via-soft-ivory to-white">
+                <div className="space-y-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <span className="bg-warm-gold/15 text-warm-gold-hover px-2.5 py-1 rounded-sm text-[10px] font-bold uppercase tracking-wider inline-block mb-2">
+                      <span className="card-badge-gold px-3.5 py-1 rounded-full text-[10px] uppercase tracking-wider inline-block mb-3">
                         {teachers[activeTeacherIndex].subject}
                       </span>
-                      <h3 className="font-serif text-3xl font-bold text-oxford-blue transition-all duration-300">
+                      <h3 className="font-serif text-3xl md:text-4xl font-bold text-oxford-blue transition-all duration-300">
                         {teachers[activeTeacherIndex].name}
                       </h3>
                     </div>
-                    <span className="text-xs font-semibold text-slate-500 bg-white border border-slate-200 px-3 py-1 rounded-full whitespace-nowrap shrink-0">
+                    <span className="text-xs font-bold text-oxford-blue bg-white border border-warm-gold/40 px-3.5 py-1.5 rounded-full whitespace-nowrap shrink-0 shadow-sm">
                       {teachers[activeTeacherIndex].experience} Exp
                     </span>
                   </div>
-                  <p className="text-slate-600 text-base leading-relaxed italic border-l-2 border-warm-gold pl-4 py-1">
+                  <p className="text-slate-600 text-base leading-relaxed italic border-l-4 border-warm-gold pl-5 py-2 bg-white/60 rounded-r-xl">
                     "{teachers[activeTeacherIndex].bio}"
                   </p>
                 </div>
-                <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
+                <div className="pt-5 border-t border-slate-200 flex items-center justify-between">
                   <a 
                     href="#contact"
-                    className="bg-oxford-blue hover:bg-oxford-blue/90 text-white px-6 py-2.5 rounded-sm font-bold text-xs uppercase tracking-wider transition-all shadow-sm"
+                    className="btn-gold-luxury px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-md"
                   >
                     Book Free Trial Class
                   </a>
-                  <span className="text-xs text-slate-400 font-mono">
-                    Educator {activeTeacherIndex + 1} of {teachers.length}
+                  <span className="text-xs text-slate-500 font-mono font-semibold bg-slate-100 px-3 py-1 rounded-full">
+                    Instructor {activeTeacherIndex + 1} / {teachers.length}
                   </span>
                 </div>
               </div>
@@ -683,13 +749,13 @@ function App() {
         </section>
 
         {/* 8. TESTIMONIALS */}
-        <section id="testimonials" className="py-20 bg-oxford-blue text-white relative overflow-hidden border-t border-b border-warm-gold/20">
+        <section id="testimonials" className="py-24 bg-oxford-blue text-white relative overflow-hidden border-t border-b border-warm-gold/20">
           <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#c5a880_1.5px,transparent_1.5px)] [background-size:32px_32px]"></div>
           <div className="max-w-4xl mx-auto px-6 text-center space-y-4 relative z-10">
-            <span className="text-warm-gold font-semibold uppercase tracking-wider text-xs md:text-sm">
+            <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
               Academy Reviews
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-white">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-white">
               What Students & Parents Say
             </h2>
 
@@ -706,7 +772,7 @@ function App() {
                 easing="elastic"
               >
                 {testimonials.map((t, idx) => (
-                  <Card key={idx} className="bg-[#0b2545]/95 border border-warm-gold/30 p-8 rounded-sm shadow-2xl flex flex-col justify-between select-none text-left">
+                  <Card key={idx} className="card-glass-dark p-8 rounded-2xl shadow-2xl flex flex-col justify-between select-none text-left border border-warm-gold/30">
                     <div className="space-y-4">
                       {/* Rating Stars */}
                       <div className="flex gap-1 justify-start">
@@ -716,7 +782,7 @@ function App() {
                       </div>
                       
                       {/* Quote text */}
-                      <blockquote className="font-serif text-sm md:text-base leading-relaxed italic text-slate-100 pl-4 border-l-2 border-warm-gold/50">
+                      <blockquote className="font-serif text-sm md:text-base leading-relaxed italic text-slate-100 pl-4 border-l-2 border-warm-gold/60">
                         "{t.quote}"
                       </blockquote>
                     </div>
@@ -736,29 +802,29 @@ function App() {
         </section>
 
         {/* 9. CONTACT US */}
-        <section id="contact" className="py-20 bg-white">
+        <section id="contact" className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 space-y-12">
             <div className="text-center space-y-4 max-w-2xl mx-auto">
-              <span className="text-warm-gold font-semibold uppercase tracking-wider text-xs md:text-sm">
+              <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
                 Get In Touch
               </span>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-oxford-blue">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue">
                 Start Your Learning Journey
               </h2>
-              <p className="text-slate-600">
+              <p className="text-slate-600 text-base">
                 Submit an inquiry or contact us directly. We will get back to you within 24 hours to schedule a session.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-start">
               
-              {/* Inquiry Form */}
-              <div className="bg-soft-ivory p-8 rounded-sm border border-slate-200 relative overflow-hidden">
+              {/* Inquiry Form Card */}
+              <div className="card-luxury p-8 md:p-10 rounded-2xl shadow-xl relative overflow-hidden bg-white border border-slate-200">
                 
                 {submitStatus === "success" && (
-                  <div className="absolute inset-0 bg-oxford-blue/95 flex flex-col items-center justify-center text-center p-6 z-10 transition-opacity">
-                    <div className="bg-warm-gold p-4 rounded-full text-oxford-blue mb-4">
-                      <Check className="w-8 h-8" />
+                  <div className="absolute inset-0 bg-oxford-blue/98 flex flex-col items-center justify-center text-center p-6 z-20 transition-opacity">
+                    <div className="bg-warm-gold p-4 rounded-full text-oxford-blue mb-4 shadow-lg">
+                      <Check className="w-8 h-8 stroke-[3]" />
                     </div>
                     <h3 className="font-serif text-2xl font-bold text-white mb-2">Inquiry Submitted!</h3>
                     <p className="text-slate-300 text-sm max-w-sm">
@@ -767,9 +833,9 @@ function App() {
                   </div>
                 )}
 
-                <h3 className="font-serif text-xl font-bold text-oxford-blue mb-6">Send an Inquiry</h3>
+                <h3 className="font-serif text-2xl font-bold text-oxford-blue mb-6 text-left">Send an Inquiry</h3>
                 <form onSubmit={handleFormSubmit} className="space-y-5">
-                  <div className="text-left space-y-1">
+                  <div className="text-left space-y-1.5">
                     <label htmlFor="name" className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Student / Parent Name *
                     </label>
@@ -779,15 +845,15 @@ function App() {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className={`w-full bg-white border px-4 py-3 rounded-sm text-sm focus:outline-none focus:border-oxford-blue transition-colors ${
-                        errors.name ? "border-red-500 focus:border-red-500" : "border-slate-300"
+                      className={`w-full bg-soft-ivory border px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-oxford-blue focus:bg-white transition-colors ${
+                        errors.name ? "border-red-500 focus:border-red-500" : "border-slate-200"
                       }`}
                       placeholder="e.g. Salim Smith"
                     />
                     {errors.name && <p className="text-xs text-red-500 font-semibold mt-1">Name is required.</p>}
                   </div>
 
-                  <div className="text-left space-y-1">
+                  <div className="text-left space-y-1.5">
                     <label htmlFor="phone" className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Phone Number *
                     </label>
@@ -797,15 +863,15 @@ function App() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className={`w-full bg-white border px-4 py-3 rounded-sm text-sm focus:outline-none focus:border-oxford-blue transition-colors ${
-                        errors.phone ? "border-red-500 focus:border-red-500" : "border-slate-300"
+                      className={`w-full bg-soft-ivory border px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-oxford-blue focus:bg-white transition-colors ${
+                        errors.phone ? "border-red-500 focus:border-red-500" : "border-slate-200"
                       }`}
-                      placeholder="e.g. +1 555-0199"
+                      placeholder="e.g. +91 94433 12345"
                     />
                     {errors.phone && <p className="text-xs text-red-500 font-semibold mt-1">Phone number is required.</p>}
                   </div>
 
-                  <div className="text-left space-y-1">
+                  <div className="text-left space-y-1.5">
                     <label htmlFor="email" className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Email Address (Optional)
                     </label>
@@ -815,12 +881,12 @@ function App() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full bg-white border border-slate-300 px-4 py-3 rounded-sm text-sm focus:outline-none focus:border-oxford-blue transition-colors"
+                      className="w-full bg-soft-ivory border border-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-oxford-blue focus:bg-white transition-colors"
                       placeholder="e.g. parent@email.com"
                     />
                   </div>
 
-                  <div className="text-left space-y-1">
+                  <div className="text-left space-y-1.5">
                     <label htmlFor="grade" className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Target Class / Grade
                     </label>
@@ -829,7 +895,7 @@ function App() {
                       name="grade"
                       value={formData.grade}
                       onChange={handleInputChange}
-                      className="w-full bg-white border border-slate-300 px-4 py-3 rounded-sm text-sm focus:outline-none focus:border-oxford-blue transition-colors"
+                      className="w-full bg-soft-ivory border border-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-oxford-blue focus:bg-white transition-colors"
                     >
                       <option>Primary (Grades 5-7)</option>
                       <option>Secondary (Grades 8-10)</option>
@@ -838,7 +904,7 @@ function App() {
                     </select>
                   </div>
 
-                  <div className="text-left space-y-1">
+                  <div className="text-left space-y-1.5">
                     <label htmlFor="message" className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Brief Message
                     </label>
@@ -848,59 +914,59 @@ function App() {
                       value={formData.message}
                       onChange={handleInputChange}
                       rows="3"
-                      className="w-full bg-white border border-slate-300 px-4 py-3 rounded-sm text-sm focus:outline-none focus:border-oxford-blue transition-colors resize-none"
+                      className="w-full bg-soft-ivory border border-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-oxford-blue focus:bg-white transition-colors resize-none"
                       placeholder="Specify subjects or doubt-clearing needs..."
                     ></textarea>
                   </div>
 
                   <button 
                     type="submit" 
-                    className="w-full bg-oxford-blue hover:bg-oxford-blue/90 text-white font-bold py-3.5 rounded-sm text-sm uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2"
+                    className="w-full bg-oxford-blue hover:bg-oxford-blue/90 text-white font-bold py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2"
                   >
                     Submit Inquiry <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
               </div>
 
-              {/* Location Details & Map */}
-              <div className="space-y-8 flex flex-col justify-between text-left">
-                <div className="space-y-6">
-                  <h3 className="font-serif text-xl font-bold text-oxford-blue">Contact Information</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-4">
-                      <div className="bg-warm-gold/20 p-2.5 rounded-sm text-warm-gold-hover mt-1 shrink-0">
+              {/* Location Details & Map Card */}
+              <div className="space-y-6 flex flex-col justify-between text-left">
+                <div className="space-y-4">
+                  <h3 className="font-serif text-2xl font-bold text-oxford-blue">Contact Information</h3>
+                  <div className="space-y-3">
+                    <div className="card-luxury p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-start gap-4 hover:border-warm-gold/40 transition-all">
+                      <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center text-warm-gold-hover shrink-0">
                         <MapPin className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-slate-800 text-sm uppercase tracking-wider">Academy Location</h4>
-                        <p className="text-slate-600 text-sm mt-1">102 Hope Tower, Cantonment, Tiruchirappalli, Tamil Nadu - 620001</p>
+                        <h4 className="font-bold text-slate-800 text-xs uppercase tracking-wider">Academy Location</h4>
+                        <p className="text-slate-600 text-sm mt-0.5">102 Hope Tower, Cantonment, Tiruchirappalli, Tamil Nadu - 620001</p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="bg-warm-gold/20 p-2.5 rounded-sm text-warm-gold-hover mt-1 shrink-0">
+                    <div className="card-luxury p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-start gap-4 hover:border-warm-gold/40 transition-all">
+                      <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center text-warm-gold-hover shrink-0">
                         <Phone className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-slate-800 text-sm uppercase tracking-wider">Phone Queries</h4>
-                        <p className="text-slate-600 text-sm mt-1">+91 94433 12345 (Mon-Sat, 9AM-8PM)</p>
+                        <h4 className="font-bold text-slate-800 text-xs uppercase tracking-wider">Phone Queries</h4>
+                        <p className="text-slate-600 text-sm mt-0.5">+91 94433 12345 (Mon-Sat, 9AM-8PM)</p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-4">
-                      <div className="bg-warm-gold/20 p-2.5 rounded-sm text-warm-gold-hover mt-1 shrink-0">
+                    <div className="card-luxury p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-start gap-4 hover:border-warm-gold/40 transition-all">
+                      <div className="w-10 h-10 rounded-lg bg-warm-gold/20 flex items-center justify-center text-warm-gold-hover shrink-0">
                         <Mail className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-slate-800 text-sm uppercase tracking-wider">Email Admissions</h4>
-                        <p className="text-slate-600 text-sm mt-1">admissions@hopetuition.in</p>
+                        <h4 className="font-bold text-slate-800 text-xs uppercase tracking-wider">Email Admissions</h4>
+                        <p className="text-slate-600 text-sm mt-0.5">admissions@hopetuition.in</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Google Maps embed iframe */}
-                <div className="border border-slate-200 rounded-sm overflow-hidden h-64 bg-slate-100 shadow-inner">
+                {/* Google Maps Card Container */}
+                <div className="card-luxury rounded-2xl overflow-hidden h-64 border border-slate-200 shadow-md">
                   <iframe 
                     title="Hope Tuition Academy Location Map"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.9242967674257!2d78.68532457492167!3d10.817112089333918!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3baaf507c3905cf1%3A0x7d632551cfd23d8c!2sCantonment%2C%20Tiruchirappalli%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin" 
