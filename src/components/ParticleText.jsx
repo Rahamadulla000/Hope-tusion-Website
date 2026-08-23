@@ -139,15 +139,15 @@ const ParticleText = ({
       ctx.fill();
     };
 
-    const render = now => {
-      ctx.clearRect(0, 0, width, height);
+    let isIntersecting = false;
 
-      if (glow && !reducedMotion) {
-        ctx.shadowBlur = particleSize * 3;
-        ctx.shadowColor = highlightColor;
-      } else {
-        ctx.shadowBlur = 0;
+    const render = now => {
+      if (!isIntersecting) {
+        animationFrame = null;
+        return;
       }
+
+      ctx.clearRect(0, 0, width, height);
 
       pointer.smoothX += (pointer.x - pointer.smoothX) * 0.18;
       pointer.smoothY += (pointer.y - pointer.smoothY) * 0.18;
@@ -192,7 +192,6 @@ const ParticleText = ({
       });
 
       ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
 
       if (gathering && complete) {
         gathering = false;
@@ -202,7 +201,7 @@ const ParticleText = ({
     };
 
     const ensureRenderLoop = () => {
-      if (animationFrame === null) {
+      if (isIntersecting && animationFrame === null) {
         animationFrame = window.requestAnimationFrame(render);
       }
     };
@@ -289,7 +288,7 @@ const ParticleText = ({
         }
       }
 
-      const maxParticles = Math.max(900, Math.min(5200, Math.floor((width * height) / 90)));
+      const maxParticles = Math.max(500, Math.min(1200, Math.floor((width * height) / 160)));
       const stride = Math.max(1, Math.ceil(targets.length / maxParticles));
       const baseRgb = hexToRgb(color);
       const highlightRgb = hexToRgb(highlightColor);
@@ -380,11 +379,29 @@ const ParticleText = ({
 
     const resizeObserver = new ResizeObserver(queueSample);
     resizeObserver.observe(container);
+
+    const intersectionObserver = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          isIntersecting = entry.isIntersecting;
+          if (isIntersecting) {
+            ensureRenderLoop();
+          } else if (animationFrame !== null) {
+            window.cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+          }
+        }
+      },
+      { threshold: 0.05 }
+    );
+    intersectionObserver.observe(container);
+
     sampleText();
 
     return () => {
       buildId += 1;
       resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       reduceMotionQuery?.removeEventListener('change', handleReduceMotionChange);
       canvas.removeEventListener('pointerenter', handlePointerEnter);
       canvas.removeEventListener('pointermove', handlePointerMove);

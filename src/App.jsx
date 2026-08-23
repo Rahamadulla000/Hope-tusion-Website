@@ -57,30 +57,36 @@ function App() {
 
   // Listen to scroll to apply glassmorphism effect to header and run scrollspy section checks
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          setScrolled(currentScrollY > 50);
 
-      // Scrollspy active section detection
-      const sections = ["home", "about", "courses", "why-us", "timings", "teachers", "testimonials", "contact"];
-      const scrollPosition = window.scrollY + 180; // Offset threshold
+          // Scrollspy active section detection
+          const sections = ["home", "about", "courses", "why-us", "timings", "teachers", "testimonials", "contact"];
+          const scrollPosition = currentScrollY + 180; // Offset threshold
 
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(section);
-            break;
+          for (const section of sections) {
+            const el = document.getElementById(section);
+            if (el) {
+              const top = el.offsetTop;
+              const height = el.offsetHeight;
+              if (scrollPosition >= top && scrollPosition < top + height) {
+                setActiveSection(section);
+                break;
+              }
+            }
           }
-        }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     // Initial scroll trigger for mount state alignment
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -513,7 +519,7 @@ function App() {
                     {reason.description}
                   </p>
                   {/* Bottom animated border line */}
-                  <div className="w-0 group-hover:w-full h-[3px] bg-gradient-to-r from-warm-gold via-[#e0c7a0] to-warm-gold transition-all duration-500 absolute bottom-0 left-0"></div>
+                  <div className="w-full h-[3px] bg-gradient-to-r from-warm-gold via-[#e0c7a0] to-warm-gold origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 absolute bottom-0 left-0"></div>
                 </div>
               ))}
             </div>
@@ -600,7 +606,7 @@ function App() {
                     </a>
                   </div>
                   {/* Bottom animated border line */}
-                  <div className="w-0 group-hover:w-full h-[3px] bg-gradient-to-r from-warm-gold via-[#e0c7a0] to-warm-gold transition-all duration-500 absolute bottom-0 left-0"></div>
+                  <div className="w-full h-[3px] bg-gradient-to-r from-warm-gold via-[#e0c7a0] to-warm-gold origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 absolute bottom-0 left-0"></div>
                 </div>
               ))}
             </div>

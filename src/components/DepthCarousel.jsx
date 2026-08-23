@@ -125,18 +125,15 @@ const DepthCarousel = ({
       let opacity = d < 0 ? Math.max(0, 1 + d) : 1;
       if (!shown) opacity = 0;
 
-      const brightness = Math.max(0.15, 1 - back * cfg.falloff);
-      const blurPx = cfg.blur > 0 ? Math.min(cfg.blur, (back / Math.max(1, cfg.visibleCards)) * cfg.blur) : 0;
       const zi = Math.round(2000 - d * 20);
 
       el.style.transform = `translate(-50%, -50%) scale(${sc}) translateX(${tx.toFixed(2)}px) translateZ(${tz.toFixed(2)}px) rotateY(${ry.toFixed(3)}deg)`;
       el.style.opacity = opacity.toFixed(3);
-      el.style.filter = `brightness(${brightness.toFixed(3)}) blur(${blurPx.toFixed(2)}px)`;
       el.style.zIndex = String(zi);
       el.style.pointerEvents = shown && opacity > 0.05 ? 'auto' : 'none';
 
       const ov = overlayRefs.current[i];
-      if (ov) ov.style.opacity = clamp(back * cfg.falloff * 1.25, 0, 0.86).toFixed(3);
+      if (ov) ov.style.opacity = clamp(back * cfg.falloff * 1.35, 0, 0.88).toFixed(3);
     }
   }, []);
 
@@ -305,21 +302,43 @@ const DepthCarousel = ({
     reducedRef.current = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!autoplay || reducedRef.current || count < 2) return;
     const root = rootRef.current;
+    if (!root) return;
+
     let hovered = false;
     let focused = false;
+    let isIntersecting = false;
+
     const stop = () => {
       if (autoTimerRef.current) clearInterval(autoTimerRef.current);
       autoTimerRef.current = null;
     };
+
     const start = () => {
       stop();
+      if (!isIntersecting) return;
       autoTimerRef.current = window.setInterval(
         () => {
-          if (!hovered && !focused) navigateBy(1);
+          if (!hovered && !focused && isIntersecting) navigateBy(1);
         },
         Math.max(cfgRef.current.autoplayDelay, 600)
       );
     };
+
+    const io = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          isIntersecting = entry.isIntersecting;
+          if (isIntersecting) {
+            start();
+          } else {
+            stop();
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+    io.observe(root);
+
     const onEnter = () => {
       hovered = true;
     };
@@ -332,19 +351,21 @@ const DepthCarousel = ({
     const onFocusOut = () => {
       focused = false;
     };
-    root?.addEventListener('mouseenter', onEnter);
-    root?.addEventListener('mouseleave', onLeave);
-    root?.addEventListener('focusin', onFocusIn);
-    root?.addEventListener('focusout', onFocusOut);
-    start();
+
+    root.addEventListener('mouseenter', onEnter);
+    root.addEventListener('mouseleave', onLeave);
+    root.addEventListener('focusin', onFocusIn);
+    root.addEventListener('focusout', onFocusOut);
+
     return () => {
       stop();
-      root?.removeEventListener('mouseenter', onEnter);
-      root?.removeEventListener('mouseleave', onLeave);
-      root?.removeEventListener('focusin', onFocusIn);
-      root?.removeEventListener('focusout', onFocusOut);
+      io.disconnect();
+      root.removeEventListener('mouseenter', onEnter);
+      root.removeEventListener('mouseleave', onLeave);
+      root.removeEventListener('focusin', onFocusIn);
+      root.removeEventListener('focusout', onFocusOut);
     };
-  }, [autoplay, autoplayDelay, count, navigateBy]);
+  }, [autoplay, count, navigateBy]);
 
   useEffect(() => {
     layout(posRef.current);
@@ -386,7 +407,14 @@ const DepthCarousel = ({
             aria-hidden={active !== i}
             onClick={() => onCardClick(i)}
           >
-            <img className="depth-carousel__img" src={item.image} alt={item.alt || ''} draggable={false} />
+            <img 
+              className="depth-carousel__img" 
+              src={item.image} 
+              alt={item.alt || ''} 
+              draggable={false}
+              loading="lazy"
+              decoding="async" 
+            />
             <span
               className="depth-carousel__tint"
               ref={el => (overlayRefs.current[i] = el)}
