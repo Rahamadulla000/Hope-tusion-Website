@@ -23,6 +23,7 @@ import DepthCarousel from "./components/DepthCarousel";
 import ParticleText from "./components/ParticleText";
 import ClickSpark from "./components/ClickSpark";
 import CardSwap, { Card } from "./components/CardSwap";
+import aboutBgVideo from "./enaku_video_la_student_irukanu.mp4";
 
 function App() {
   // Navigation scroll state
@@ -432,31 +433,59 @@ function App() {
         </section>
 
         {/* 3. ABOUT US */}
-        <section id="about" className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6">
+        <section id="about" className="relative py-24 overflow-hidden">
+          {/* Transparent Background Video */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              className="w-full h-full object-cover opacity-45"
+              style={{ filter: "saturate(0.88) hue-rotate(-4deg) contrast(1.04) brightness(1.02)" }}
+            >
+              <source src={aboutBgVideo} type="video/mp4" />
+            </video>
+            {/* Subtle cool-navy tinted glass layer to neutralize yellow warmth & harmonize with palette */}
+            <div 
+              className="absolute inset-0 backdrop-blur-[1px]"
+              style={{ 
+                background: "linear-gradient(135deg, rgba(238, 244, 252, 0.30) 0%, rgba(255, 255, 255, 0.20) 50%, rgba(240, 246, 252, 0.28) 100%)" 
+              }}
+            ></div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6 text-left">
-                <div className="inline-flex items-center gap-2 bg-oxford-blue/5 text-oxford-blue px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-oxford-blue/10">
+                <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm text-oxford-blue px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-oxford-blue/15 shadow-sm">
                   <span className="w-2 h-2 rounded-full bg-warm-gold"></span>
                   Who We Are
                 </div>
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue leading-tight">
                   Dedicated to Cultivating Academic Excellence & Confidence
                 </h2>
-                <p className="text-slate-600 leading-relaxed text-base">
+                <p className="text-slate-700 leading-relaxed text-base font-medium">
                   Founded with the core vision of closing educational gaps, Hope Tuition Academy is a premium tutoring center built on the values of clarity, rigor, and personalization. We do not support complex administrative tracking systems; our singular focus is delivering world-class tutoring.
                 </p>
-                <div className="border-l-4 border-warm-gold pl-5 py-3 italic text-oxford-blue font-serif text-lg bg-soft-ivory rounded-r-xl shadow-sm">
+                <div 
+                  className="border-l-4 border-warm-gold pl-5 py-3 italic text-oxford-blue font-serif text-lg rounded-r-xl shadow-sm backdrop-blur-sm"
+                  style={{ backgroundColor: "rgba(255, 255, 255, 0.80)" }}
+                >
                   "Our teaching approach is based on deep conceptual understanding, structured evaluation, and reinforcing student self-belief."
                 </div>
-                <p className="text-slate-600 leading-relaxed text-base">
+                <p className="text-slate-700 leading-relaxed text-base font-medium">
                   We believe that education should not be an assembly line. By keeping our batches small and hiring only seasoned subject experts, we ensure every student receives targeted coaching that fits their unique learning rate.
                 </p>
               </div>
 
               {/* Mission/Vision Cards */}
               <div className="grid gap-6">
-                <div className="card-luxury p-8 rounded-2xl border-l-4 border-l-oxford-blue shadow-lg text-left group">
+                <div 
+                  className="card-luxury p-8 rounded-2xl border-l-4 border-l-oxford-blue shadow-lg text-left group backdrop-blur-md"
+                  style={{ backgroundColor: "rgba(255, 255, 255, 0.82)" }}
+                >
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-serif text-2xl font-bold text-oxford-blue">Our Mission</h3>
                     <div className="w-8 h-8 rounded-full bg-oxford-blue/10 flex items-center justify-center text-oxford-blue group-hover:bg-oxford-blue group-hover:text-white transition-colors">
@@ -467,7 +496,10 @@ function App() {
                     To empower secondary and high school students with structured academic mastery, turning classroom difficulties into academic confidence through custom mentorship.
                   </p>
                 </div>
-                <div className="card-luxury p-8 rounded-2xl border-l-4 border-l-warm-gold shadow-lg text-left group">
+                <div 
+                  className="card-luxury p-8 rounded-2xl border-l-4 border-l-warm-gold shadow-lg text-left group backdrop-blur-md"
+                  style={{ backgroundColor: "rgba(255, 255, 255, 0.82)" }}
+                >
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-serif text-2xl font-bold text-oxford-blue">Our Vision</h3>
                     <div className="w-8 h-8 rounded-full bg-warm-gold/20 flex items-center justify-center text-warm-gold-hover group-hover:bg-warm-gold group-hover:text-oxford-blue transition-colors">
