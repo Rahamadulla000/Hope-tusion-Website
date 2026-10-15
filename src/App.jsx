@@ -765,20 +765,59 @@ function App() {
         <section id="courses" className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 space-y-12">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 pb-8">
-              <div className="space-y-4 text-left">
+              <div className="space-y-4 text-left flex-1 min-w-0 overflow-hidden">
                 <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
                   Curriculum Options
                 </span>
-                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue">
-                  Our Expert-Led Courses
-                </h2>
-                <p className="text-slate-600 max-w-lg text-base">
-                  Explore subjects structured around board syllabus guidelines and college admission targets.
-                </p>
+                
+                {/* Infinite Marquee for Heading & Description */}
+                <div className="courses-marquee-mask overflow-hidden w-full relative py-2">
+                  <div className="courses-marquee-track">
+                    {/* First Track Group */}
+                    <div className="courses-marquee-group">
+                      {[0, 1, 2].map((idx) => (
+                        <div key={`track1-${idx}`} className="flex items-center shrink-0 pr-12 md:pr-16" {...(idx > 0 ? { "aria-hidden": "true" } : {})}>
+                          <div className="space-y-2">
+                            {idx === 0 ? (
+                              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue whitespace-nowrap">
+                                Our Expert-Led Courses
+                              </h2>
+                            ) : (
+                              <span className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue whitespace-nowrap block">
+                                Our Expert-Led Courses
+                              </span>
+                            )}
+                            <p className="text-slate-600 text-sm md:text-base whitespace-nowrap">
+                              Explore subjects structured around board syllabus guidelines and college admission targets.
+                            </p>
+                          </div>
+                          <span className="ml-12 md:ml-16 text-warm-gold/60 text-lg select-none" aria-hidden="true">✦</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Second Track Group (Seamless Loop Duplicate) */}
+                    <div className="courses-marquee-group" aria-hidden="true">
+                      {[0, 1, 2].map((idx) => (
+                        <div key={`track2-${idx}`} className="flex items-center shrink-0 pr-12 md:pr-16">
+                          <div className="space-y-2">
+                            <span className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue whitespace-nowrap block">
+                              Our Expert-Led Courses
+                            </span>
+                            <p className="text-slate-600 text-sm md:text-base whitespace-nowrap">
+                              Explore subjects structured around board syllabus guidelines and college admission targets.
+                            </p>
+                          </div>
+                          <span className="ml-12 md:ml-16 text-warm-gold/60 text-lg select-none">✦</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Segmented control tabs */}
-              <div className="flex flex-wrap gap-2 bg-slate-100/80 p-1.5 rounded-full border border-slate-200">
+              <div className="flex flex-wrap gap-2 bg-slate-100/80 p-1.5 rounded-full border border-slate-200 shrink-0">
                 {["All", "Primary", "Secondary", "High School"].map((cat) => (
                   <button
                     key={cat}
@@ -851,16 +890,55 @@ function App() {
         {/* 6. CLASS TIMINGS */}
         <section id="timings" className="py-24 bg-soft-ivory border-t border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 space-y-12">
-            <div className="text-center space-y-4 max-w-2xl mx-auto">
+            <div className="text-center space-y-4 max-w-4xl mx-auto">
               <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
                 Schedule Timetable
               </span>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue">
-                Weekly Class Timings
-              </h2>
-              <p className="text-slate-600 text-base">
-                Select your preferred slot from our morning or evening batches. Perfect for balancing academic and extra-curricular timings.
-              </p>
+
+              {/* Infinite Marquee for Heading & Description */}
+              <div className="courses-marquee-mask overflow-hidden w-full relative py-2">
+                <div className="courses-marquee-track">
+                  {/* First Track Group */}
+                  <div className="timings-marquee-group">
+                    {[0, 1, 2].map((idx) => (
+                      <div key={`timing-track1-${idx}`} className="flex items-center shrink-0 pr-12 md:pr-16" {...(idx > 0 ? { "aria-hidden": "true" } : {})}>
+                        <div className="space-y-2 text-center">
+                          {idx === 0 ? (
+                            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue whitespace-nowrap">
+                              Weekly Class Timings
+                            </h2>
+                          ) : (
+                            <span className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue whitespace-nowrap block">
+                              Weekly Class Timings
+                            </span>
+                          )}
+                          <p className="text-slate-600 text-sm md:text-base whitespace-nowrap">
+                            Select your preferred slot from our morning or evening batches. Perfect for balancing academic and extra-curricular timings.
+                          </p>
+                        </div>
+                        <span className="ml-12 md:ml-16 text-warm-gold/60 text-lg select-none" aria-hidden="true">✦</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Second Track Group (Seamless Loop Duplicate) */}
+                  <div className="timings-marquee-group" aria-hidden="true">
+                    {[0, 1, 2].map((idx) => (
+                      <div key={`timing-track2-${idx}`} className="flex items-center shrink-0 pr-12 md:pr-16">
+                        <div className="space-y-2 text-center">
+                          <span className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-oxford-blue whitespace-nowrap block">
+                            Weekly Class Timings
+                          </span>
+                          <p className="text-slate-600 text-sm md:text-base whitespace-nowrap">
+                            Select your preferred slot from our morning or evening batches. Perfect for balancing academic and extra-curricular timings.
+                          </p>
+                        </div>
+                        <span className="ml-12 md:ml-16 text-warm-gold/60 text-lg select-none">✦</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
               {/* Timetable Tab Toggle */}
               <div className="inline-flex bg-white p-1.5 rounded-full border border-slate-200 shadow-sm mt-4">
