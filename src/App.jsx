@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import { 
   Menu, 
   X, 
@@ -19,11 +19,17 @@ import {
 } from "lucide-react";
 import { courses, teachers, timings, testimonials, reasons } from "./data";
 import "./App.css";
-import DepthCarousel from "./components/DepthCarousel";
 import ParticleText from "./components/ParticleText";
 import ClickSpark from "./components/ClickSpark";
 import CardSwap, { Card } from "./components/CardSwap";
 import aboutBgVideo from "./enaku_video_la_student_irukanu.mp4";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Lazy load 3D carousel to eliminate render-blocking animation bundles from initial paint
+const DepthCarousel = lazy(() => import("./components/DepthCarousel"));
 
 function App() {
   // Navigation scroll state
@@ -34,7 +40,189 @@ function App() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeScheduleTab, setActiveScheduleTab] = useState("morning");
   
+  // High-performance lazy video loader to preserve initial FCP/LCP on mobile
+  const [loadVideo, setLoadVideo] = useState(() => typeof window !== "undefined" && !("IntersectionObserver" in window));
+  const aboutSectionRef = useRef(null);
 
+  // Why Choose Us scroll-triggered animation refs
+  const whyUsSectionRef = useRef(null);
+  const whyUsHeaderRef = useRef(null);
+  const whyUsGridRef = useRef(null);
+  const whyUsCardsRef = useRef([]);
+
+  useEffect(() => {
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setLoadVideo(true);
+              observer.disconnect();
+            }
+          });
+        },
+        { rootMargin: "400px 0px" }
+      );
+
+      if (aboutSectionRef.current) {
+        observer.observe(aboutSectionRef.current);
+      }
+
+      // Defer video loading past initial paint idle (1.5s)
+      const timer = setTimeout(() => {
+        setLoadVideo(true);
+      }, 1500);
+
+      return () => {
+        observer.disconnect();
+        clearTimeout(timer);
+      };
+    }
+  }, []);
+
+  // Scroll-triggered alternating left-right animation for Why Choose Us cards
+  useEffect(() => {
+    const section = whyUsSectionRef.current;
+    const header = whyUsHeaderRef.current;
+    const cards = whyUsCardsRef.current.filter(Boolean);
+    if (!cards.length || !section) return;
+
+    // Accessibility: check prefers-reduced-motion
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      cards.forEach((card) => {
+        card.style.opacity = "1";
+        card.style.transform = "none";
+      });
+      if (header) {
+        header.style.opacity = "1";
+        header.style.transform = "none";
+      }
+      return;
+    }
+
+    // Function to reset cards to their hidden left/right entry positions
+    const resetCards = () => {
+      cards.forEach((card, index) => {
+        gsap.killTweensOf(card);
+        card.style.transition = "none";
+        // Odd-numbered cards (01, 03, 05 -> indices 0, 2, 4): start from left (-60px)
+        // Even-numbered cards (02, 04, 06 -> indices 1, 3, 5): start from right (+60px)
+        const isOdd = index % 2 === 0;
+        const xInitial = isOdd ? -60 : 60;
+        gsap.set(card, {
+          opacity: 0,
+          x: xInitial,
+          y: 20,
+        });
+      });
+    };
+
+    // Initially hide cards
+    resetCards();
+
+    // Track cards that have already animated in the current viewport entry
+    const animatedCards = new Set();
+    let batchQueue = [];
+    let batchTimeout = null;
+
+    // 1. Observer attached to individual card elements for scroll entrance
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const card = entry.target;
+          const index = cards.indexOf(card);
+          if (index === -1) return;
+
+          if (entry.isIntersecting && !animatedCards.has(card)) {
+            batchQueue.push({ card, index });
+          }
+        });
+
+        // Batch entries entering at the same time and animate them sequentially
+        if (batchQueue.length > 0) {
+          if (batchTimeout) clearTimeout(batchTimeout);
+          batchTimeout = setTimeout(() => {
+            // Sort by card index so cards animate in sequential order (01 -> 02 -> 03 ...)
+            batchQueue.sort((a, b) => a.index - b.index);
+
+            batchQueue.forEach(({ card, index }, i) => {
+              animatedCards.add(card);
+              const isOdd = index % 2 === 0;
+              const xInitial = isOdd ? -60 : 60;
+
+              gsap.fromTo(
+                card,
+                {
+                  opacity: 0,
+                  x: xInitial,
+                  y: 20,
+                },
+                {
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                  duration: 0.8,
+                  delay: i * 0.15, // Sequential stagger
+                  ease: "power3.out",
+                  clearProps: "transform",
+                  onStart: () => {
+                    card.style.transition = "none";
+                  },
+                  onComplete: () => {
+                    card.style.transition = "";
+                  },
+                }
+              );
+            });
+            batchQueue = [];
+          }, 30);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    // 2. Section-level observer: When the user scrolls completely away from #why-us,
+    // reset cards so that scrolling back into the section reliably triggers the animation again.
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            animatedCards.clear();
+            batchQueue = [];
+            if (batchTimeout) clearTimeout(batchTimeout);
+            resetCards();
+          } else if (header) {
+            // Gently reveal header if entered
+            gsap.fromTo(
+              header,
+              { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", clearProps: "transform" }
+            );
+          }
+        });
+      },
+      {
+        threshold: 0.05,
+      }
+    );
+
+    cards.forEach((card) => cardObserver.observe(card));
+    sectionObserver.observe(section);
+
+    return () => {
+      cardObserver.disconnect();
+      sectionObserver.disconnect();
+      if (batchTimeout) clearTimeout(batchTimeout);
+      cards.forEach((card) => gsap.killTweensOf(card));
+    };
+  }, []);
 
   // Active teacher index for DepthCarousel details
   const [activeTeacherIndex, setActiveTeacherIndex] = useState(0);
@@ -433,20 +621,24 @@ function App() {
         </section>
 
         {/* 3. ABOUT US */}
-        <section id="about" className="relative py-24 overflow-hidden">
+        <section id="about" ref={aboutSectionRef} className="relative py-24 overflow-hidden">
           {/* Transparent Background Video */}
           <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              className="w-full h-full object-cover opacity-45"
-              style={{ filter: "saturate(0.88) hue-rotate(-4deg) contrast(1.04) brightness(1.02)" }}
-            >
-              <source src={aboutBgVideo} type="video/mp4" />
-            </video>
+            {loadVideo && (
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                disablePictureInPicture
+                disableRemotePlayback
+                className="w-full h-full object-cover opacity-45"
+                style={{ filter: "saturate(0.88) hue-rotate(-4deg) contrast(1.04) brightness(1.02)" }}
+              >
+                <source src={aboutBgVideo} type="video/mp4" />
+              </video>
+            )}
             {/* Subtle cool-navy tinted glass layer to neutralize yellow warmth & harmonize with palette */}
             <div 
               className="absolute inset-0 backdrop-blur-[1px]"
@@ -516,9 +708,16 @@ function App() {
         </section>
 
         {/* 4. WHY CHOOSE US */}
-        <section id="why-us" className="py-24 bg-soft-ivory border-t border-b border-slate-200">
+        <section 
+          id="why-us" 
+          ref={whyUsSectionRef}
+          className="py-24 bg-soft-ivory border-t border-b border-slate-200 overflow-hidden"
+        >
           <div className="max-w-7xl mx-auto px-6 text-center space-y-12">
-            <div className="space-y-4 max-w-2xl mx-auto">
+            <div 
+              ref={whyUsHeaderRef}
+              className="space-y-4 max-w-2xl mx-auto"
+            >
               <span className="text-warm-gold font-bold uppercase tracking-[0.2em] text-xs md:text-sm block">
                 Our Differentiators
               </span>
@@ -530,10 +729,14 @@ function App() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div 
+              ref={whyUsGridRef}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
               {reasons.map((reason, index) => (
                 <div 
                   key={index}
+                  ref={(el) => { whyUsCardsRef.current[index] = el; }}
                   className="card-luxury p-8 rounded-2xl text-left space-y-5 group relative"
                 >
                   <div className="flex items-center justify-between">
@@ -734,20 +937,22 @@ function App() {
             <div className="grid lg:grid-cols-12 gap-12 items-center max-w-6xl mx-auto">
               {/* Left pane: The 3D Carousel */}
               <div className="lg:col-span-6 h-[450px] relative w-full flex items-center justify-center overflow-hidden">
-                <DepthCarousel
-                  items={teachers.map(t => ({ image: t.image, alt: t.name }))}
-                  onChange={(idx) => setActiveTeacherIndex(idx)}
-                  depth={160}
-                  spread={70}
-                  tilt={15}
-                  perspective={1200}
-                  visibleCards={3}
-                  autoplay
-                  loop
-                  cardWidth={260}
-                  cardHeight={340}
-                  tint="#0b2545"
-                />
+                <Suspense fallback={<div className="w-full h-full flex items-center justify-center" />}>
+                  <DepthCarousel
+                    items={teachers.map(t => ({ image: t.image, alt: t.name }))}
+                    onChange={(idx) => setActiveTeacherIndex(idx)}
+                    depth={160}
+                    spread={70}
+                    tilt={15}
+                    perspective={1200}
+                    visibleCards={3}
+                    autoplay
+                    loop
+                    cardWidth={260}
+                    cardHeight={340}
+                    tint="#0b2545"
+                  />
+                </Suspense>
               </div>
 
               {/* Right pane: Teacher Details Card */}
